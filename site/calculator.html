@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Romanian Crypto Tax Calculator (2025)</title>
+  <link rel="stylesheet" href="styles/style.css" />
+</head>
+<body>
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="nav-brand">FUTURΞ CRYPTO</div>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="taxes.html">Taxes</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="calculator.html" class="active">Calculator</a></li>
+    </ul>
+  </nav>
+
+  <!-- Calculator Section -->
+  <section class="taxes-section">
+    <h1>Romanian Crypto Tax Calculator (2025)</h1>
+    <p>
+      Introdu suma totală a câștigului din criptomonede (lei) pentru a estima:
+      <ul>
+        <li>Impozitul pe profit (10% dacă depășești 600 lei anual)</li>
+        <li>CASS (10% dintr-un prag minim, dacă depășești anumite plafoane: 24.300 lei, 48.600 lei, sau 97.200 lei)</li>
+      </ul>
+    </p>
+
+    <div class="calculator-form">
+      <label for="gains">Câștig total (lei):</label><br/>
+      <input type="number" id="gains" placeholder="Ex. 5000" />
+      <button id="calculateBtn">Calculează</button>
+    </div>
+
+    <div class="calculator-result" id="calculatorResult">
+      <!-- Results will appear here -->
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>© 2025 FuturΞ Crypto. All rights reserved.</p>
+  </footer>
+
+  <!-- Calculator Script -->
+  <script>
+    // Constants for 2025
+    const SAL_MINIM_2025 = 4050;            // Lei
+    const EXEMPTION_TOTAL = 600;            // Lei, if gains < 600 => no tax
+    const IMPOZIT_RATE = 0.10;              // 10% profit tax
+    const CASS_RATE = 0.10;                 // 10% CASS
+    const PRAG_6 = 6 * SAL_MINIM_2025;      // 24,300 lei
+    const PRAG_12 = 12 * SAL_MINIM_2025;    // 48,600 lei
+    const PRAG_24 = 24 * SAL_MINIM_2025;    // 97,200 lei
+
+    // CASS is calculated on at least 6, 12, or 24 salaries min
+    // if your gains exceed those thresholds.
+    const CASS_6 = PRAG_6 * CASS_RATE;   // 2,430 lei
+    const CASS_12 = PRAG_12 * CASS_RATE; // 4,860 lei
+    const CASS_24 = PRAG_24 * CASS_RATE; // 9,720 lei
+
+    const calculateBtn = document.getElementById('calculateBtn');
+    const gainsInput = document.getElementById('gains');
+    const resultDiv = document.getElementById('calculatorResult');
+
+    calculateBtn.addEventListener('click', () => {
+      const gains = parseFloat(gainsInput.value);
+
+      if (isNaN(gains) || gains < 0) {
+        resultDiv.innerHTML = '<p style="color:red;">Introduceți un câștig valid, mai mare sau egal cu 0.</p>';
+        return;
+      }
+
+      // 1) Calculate 10% profit tax (if > 600 lei)
+      let profitTax = 0;
+      if (gains >= EXEMPTION_TOTAL) {
+        profitTax = gains * IMPOZIT_RATE;
+      }
+
+      // 2) Calculate CASS based on thresholds
+      let cass = 0;
+      if (gains >= PRAG_24) {
+        // Gains >= 97,200 => pay 10% of 24 x salariu minim
+        cass = CASS_24; 
+      } else if (gains >= PRAG_12) {
+        // Gains between 48,600 and 97,200
+        cass = CASS_12;
+      } else if (gains >= PRAG_6) {
+        // Gains between 24,300 and 48,600
+        cass = CASS_6;
+      }
+      // if gains < 24,300 => cass = 0
+
+      // 3) Net = Gains - profitTax - cass
+      const net = gains - profitTax - cass;
+      if (net < 0) {
+        // Theoretically shouldn't happen, but just in case
+        resultDiv.innerHTML = '<p style="color:red;">Suma de taxe depășește câștigul. Verificați datele.</p>';
+        return;
+      }
+
+      // Format for display
+      const gainsFmt = gains.toLocaleString('ro-RO');
+      const profitTaxFmt = profitTax.toLocaleString('ro-RO');
+      const cassFmt = cass.toLocaleString('ro-RO');
+      const netFmt = net.toLocaleString('ro-RO');
+
+      // Display results
+      resultDiv.innerHTML = `
+        <p>
+          <strong>Câștig total:</strong> ${gainsFmt} lei<br/>
+          <strong>Impozit pe profit (10%):</strong> ${profitTaxFmt} lei<br/>
+          <strong>CASS:</strong> ${cassFmt} lei<br/>
+          <strong>Suma rămasă în mână (net):</strong> ${netFmt} lei
+        </p>
+      `;
+    });
+  </script>
+</body>
+</html>

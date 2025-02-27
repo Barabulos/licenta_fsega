@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Futuristic Crypto Website</title>
+  <link rel="stylesheet" href="styles/style.css" />
+</head>
+<body>
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="nav-brand"> nume licenta</div>
+    <ul class="nav-links">
+      <li><a href="index.html" class="active">Home</a></li>
+      <li><a href="taxes.html">Taxes</a></li>
+      <li><a href="about.html">About</a></li>
+    </ul>
+  </nav>
+
+  <!-- Hero Section -->
+  <header class="hero">
+    <h1>Explore the Future of Crypto</h1>
+    <p>Stay updated with the top cryptocurrencies and learn about tax regulations in Romania.</p>
+  </header>
+
+  <!-- Top Cryptocurrencies Section -->
+  <section class="crypto-section">
+    <h2>Top Cryptocurrencies</h2>
+
+    <!-- Dropdown to change currency -->
+    <div class="crypto-controls">
+      <label for="currencySelect">Currency:</label>
+      <select id="currencySelect">
+        <option value="usd" selected>USD</option>
+        <option value="eur">EUR</option>
+        <option value="ron">RON</option>
+      </select>
+    </div>
+
+    <!-- Container for crypto cards -->
+    <div id="crypto-container" class="crypto-container"></div>
+
+    <!-- Load More button -->
+    <div class="load-more-container">
+      <button id="loadMoreBtn">Load More</button>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>© 2025 Vidrean Robert. All rights reserved.</p>
+  </footer>
+
+  <!-- Script -->
+  <script src="scripts/script.js"></script>
+</body>
+</html>
